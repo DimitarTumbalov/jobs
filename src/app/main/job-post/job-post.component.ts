@@ -59,7 +59,7 @@ export class JobPostComponent implements OnInit {
 
     const job = {
       id: null,
-      organizationId: loggedUser.id,
+      userId: loggedUser.id,
       title: this.formGroup.value.title,
       description: this.formGroup.value.description,
       jobTypeId: this.formGroup.value.jobTypeId,

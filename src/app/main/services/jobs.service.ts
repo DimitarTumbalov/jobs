@@ -15,7 +15,7 @@ export class JobsService {
   }
 
   getJobs$(typeId: number = null, categoryId: number = null): Observable<Job[]> {
-    let finalUrl = `${this.url}?_expand=jobType&_expand=jobCategory`;
+    let finalUrl = `${this.url}?_expand=jobType&_expand=jobCategory&_expand=user`;
     console.log(`getJobs, typeId: ${typeId}, categoryId: ${categoryId}`)
 
     if(typeId != null)
@@ -30,7 +30,7 @@ export class JobsService {
   }
 
   getJob$(id: number): Observable<Job> {
-    const url = `${this.url}/${id}`;
+    const url = `${this.url}/${id}?_expand=user`;
 
     return this.http.get<Job>(url);
   }

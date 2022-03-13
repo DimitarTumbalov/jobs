@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-  <div class="col-9 bg-light p-4 shadow-sm" style="max-width: 400px;">
+  <div class="col-xl-4 col-lg-5 col-md-6 col-10 bg-light p-4 shadow-sm">
     <h3>Sign in</h3>
 
     <form class="mt-4"
@@ -23,7 +23,7 @@
       </div>
 
       <div>
-        <button type="submit" class="btn btn-danger w-100 mt-4">Sign in</button>
+        <button type="submit" class="btn btn-danger w-100 mt-4 shadow-none">Sign in</button>
       </div>
 
       <small class="row text-danger justify-content-center mt-1" *ngIf="(hasBeenSubmitted && formGroup.invalid) || (hasBeenSubmitted && !doesUserExist)">
@@ -31,7 +31,7 @@
       </small>
 
       <div class="col text-center mt-3">
-        <button class="btn btn-link text-danger justify-content-center" (click)="onSingUpBtnClick()">or create an account now</button>
+        <button class="btn btn-link text-danger justify-content-center shadow-none" (click)="onSingUpBtnClick()">or create an account now</button>
       </div>
     </form>
   </div>

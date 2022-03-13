@@ -4,6 +4,7 @@ import {MainComponent} from "./main.component";
 import {HomeComponent} from "./home/home.component";
 import {JobPostComponent} from "./job-post/job-post.component";
 import {JobsComponent} from "./jobs/jobs.component";
+import {JobComponent} from "./job/job.component";
 
 const routes: Routes = [
   {
@@ -29,7 +30,7 @@ const routes: Routes = [
       },
       {
         path: 'jobs/:id',
-        component: JobsComponent
+        component: JobComponent
       },
     ]
   }

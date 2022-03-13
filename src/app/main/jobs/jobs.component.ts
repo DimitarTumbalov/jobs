@@ -79,4 +79,8 @@ export class JobsComponent implements OnInit {
       }
     });
   }
+
+  onJobClick(id: number) {
+    this.router.navigate([`/jobs/${id}`])
+  }
 }

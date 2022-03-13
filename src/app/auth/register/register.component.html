@@ -1,15 +1,15 @@
 <div class="row justify-content-center">
-  <div class="col-9 bg-light p-4 shadow-sm" style="max-width: 400px;">
+  <div class="col-xl-4 col-lg-5 col-md-6 col-10 bg-light p-4 shadow-sm">
     <h3 >Sign up</h3>
 
     <form class="mt-4"
           [formGroup]="formGroup" (ngSubmit)="onSubmit()">
-      <div class="btn-group" role="group" >
+      <div class="btn-group" role="group" style="flex-wrap: wrap;">
         <input type="radio" value="user" formControlName="role" class="btn-check" id="btnradio1" autocomplete="off">
-        <label class="btn btn-outline-danger" for="btnradio1">Person</label>
+        <label class="btn btn-outline-danger shadow-none" for="btnradio1">Person</label>
 
         <input type="radio" value="organization" formControlName="role" class="btn-check" id="btnradio2" autocomplete="off">
-        <label class="btn btn-outline-danger" for="btnradio2">Organization</label>
+        <label class="btn btn-outline-danger shadow-none" for="btnradio2">Organization</label>
       </div>
 
       <div class="form-group mt-4" *ngIf="roleFormControl.value === 'user'">
@@ -77,7 +77,7 @@
       </div>
 
       <div>
-        <button type="submit" class="btn btn-danger w-100 mt-4 mb-3">Sign up</button>
+        <button type="submit" class="btn btn-danger w-100 mt-4 mb-3 shadow-none">Sign up</button>
       </div>
     </form>
   </div>
