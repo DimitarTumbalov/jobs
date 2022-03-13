@@ -1,0 +1,84 @@
+<div class="div-center">
+  <div class="content">
+    <h3 class="mt-2">Sign up</h3>
+
+    <form class="mt-4"
+          [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <div class="btn-group" role="group" >
+        <input type="radio" value="user" formControlName="role" class="btn-check" id="btnradio1" autocomplete="off">
+        <label class="btn btn-outline-danger" for="btnradio1">Person</label>
+
+        <input type="radio" value="organization" formControlName="role" class="btn-check" id="btnradio2" autocomplete="off">
+        <label class="btn btn-outline-danger" for="btnradio2">Organization</label>
+      </div>
+
+      <div class="form-group mt-2" *ngIf="roleFormControl.value === 'user'">
+        <label for="firstName">First Name</label>
+        <input type="text"
+               placeholder="First Name"
+               formControlName="firstName"
+               class="form-control"
+               id="firstName">
+        <small class="row text-danger mt-1 mx-2" *ngIf="firstNameControl.touched && firstNameControl.invalid">
+          Must be between 1 and 25 characters
+        </small>
+      </div>
+
+      <div class="form-group mt-1" *ngIf="roleFormControl.value === 'user'">
+        <label for="lastName">Last Name</label>
+        <input type="text"
+               placeholder="Last Name"
+               formControlName="lastName"
+               class="form-control"
+               id="lastName">
+        <small class="row text-danger mt-1 mx-2" *ngIf="lastNameFormControl.touched && lastNameFormControl.invalid">
+          Must be between 1 and 25 characters
+        </small>
+      </div>
+
+      <div class="form-group mt-1" *ngIf="roleFormControl.value === 'organization'">
+        <label for="organizationName">Organization Name</label>
+        <input type="text"
+               placeholder="Organization Name"
+               formControlName="organizationName"
+               class="form-control"
+               id="organizationName">
+        <small class="row text-danger mt-1 mx-2" *ngIf="organizationNameFormControl.touched && organizationNameFormControl.invalid">
+          Must be between 1 and 50 characters
+        </small>
+      </div>
+
+      <div class="form-group mt-1">
+        <label for="email">Email</label>
+        <input type="email"
+               placeholder="Email"
+               formControlName="email"
+               class="form-control"
+               id="email"
+               (click)="isEmailUsed = false">
+        <small class="row text-danger mt-1 mx-2" *ngIf="emailFormControl.touched && emailFormControl.invalid">
+          Please enter a valid email address
+        </small>
+        <small class="row text-danger mt-1 mx-2" *ngIf="emailFormControl.touched && isEmailUsed">
+          This email has been used by another user
+        </small>
+      </div>
+
+      <div class="form-group mt-1">
+        <label for="password">Password</label>
+        <input type="password"
+               placeholder="Password"
+               formControlName="password"
+               class="form-control"
+               id="password">
+        <small class="row text-danger mt-1 mx-2" *ngIf="passwordFormControl.touched && passwordFormControl.invalid">
+          Must be between 4 and 20 characters
+        </small>
+      </div>
+
+      <div>
+        <button type="submit" class="btn btn-danger w-100 mt-3 mb-3">Sign up</button>
+      </div>
+    </form>
+  </div>
+</div>
