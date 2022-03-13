@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-light bg-light mb-3">
+<nav class="navbar navbar-expand-sm navbar-light bg-light shadow-sm">
   <div class="container">
     <a class="navbar-brand" [routerLink]="'.'">Jobs</a>
 
@@ -13,13 +13,16 @@
           <a class="nav-link" [routerLink]="'/home'" (click)="isMenuCollapsed = true">Home</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
+          <a class="nav-link" [routerLink]="'/jobs'" (click)="isMenuCollapsed = true">All jobs</a>
+        </li>
+        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
           <a class="nav-link" [routerLink]="'/auth'" (click)="isMenuCollapsed = true">Applications</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
           <a class="nav-link" [routerLink]="'/auth'" (click)="isMenuCollapsed = true">Your jobs</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/auth'" (click)="isMenuCollapsed = true">Post job</a>
+          <a class="nav-link" [routerLink]="'/jobs/post'" (click)="isMenuCollapsed = true">Post job</a>
         </li>
         <li class="nav-item" ngbDropdown>
           <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown1" role="button">

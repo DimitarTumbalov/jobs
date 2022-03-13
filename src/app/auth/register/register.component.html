@@ -1,6 +1,6 @@
-<div class="div-center">
-  <div class="content">
-    <h3 class="mt-2">Sign up</h3>
+<div class="row justify-content-center">
+  <div class="col-9 bg-light p-4 shadow-sm" style="max-width: 400px;">
+    <h3 >Sign up</h3>
 
     <form class="mt-4"
           [formGroup]="formGroup" (ngSubmit)="onSubmit()">
@@ -12,7 +12,7 @@
         <label class="btn btn-outline-danger" for="btnradio2">Organization</label>
       </div>
 
-      <div class="form-group mt-2" *ngIf="roleFormControl.value === 'user'">
+      <div class="form-group mt-4" *ngIf="roleFormControl.value === 'user'">
         <label for="firstName">First Name</label>
         <input type="text"
                placeholder="First Name"
@@ -24,7 +24,7 @@
         </small>
       </div>
 
-      <div class="form-group mt-1" *ngIf="roleFormControl.value === 'user'">
+      <div class="form-group mt-2" *ngIf="roleFormControl.value === 'user'">
         <label for="lastName">Last Name</label>
         <input type="text"
                placeholder="Last Name"
@@ -36,7 +36,7 @@
         </small>
       </div>
 
-      <div class="form-group mt-1" *ngIf="roleFormControl.value === 'organization'">
+      <div class="form-group mt-4" *ngIf="roleFormControl.value === 'organization'">
         <label for="organizationName">Organization Name</label>
         <input type="text"
                placeholder="Organization Name"
@@ -48,7 +48,7 @@
         </small>
       </div>
 
-      <div class="form-group mt-1">
+      <div class="form-group mt-2">
         <label for="email">Email</label>
         <input type="email"
                placeholder="Email"
@@ -64,7 +64,7 @@
         </small>
       </div>
 
-      <div class="form-group mt-1">
+      <div class="form-group mt-2">
         <label for="password">Password</label>
         <input type="password"
                placeholder="Password"
@@ -77,7 +77,7 @@
       </div>
 
       <div>
-        <button type="submit" class="btn btn-danger w-100 mt-3 mb-3">Sign up</button>
+        <button type="submit" class="btn btn-danger w-100 mt-4 mb-3">Sign up</button>
       </div>
     </form>
   </div>
