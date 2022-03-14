@@ -2,7 +2,6 @@
   <div class="container">
     <a class="navbar-brand" [routerLink]="'.'">Jobs</a>
 
-    <!-- Step 3: Toggle the value of the property when the toggler button is clicked. -->
     <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
       &#9776;
     </button>
@@ -16,10 +15,10 @@
           <a class="nav-link" [routerLink]="'/jobs'" (click)="isMenuCollapsed = true">Jobs</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/auth'" (click)="isMenuCollapsed = true">Applications</a>
+          <a class="nav-link" [routerLink]="'/applications'" (click)="isMenuCollapsed = true">Applications</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/auth'" (click)="isMenuCollapsed = true">Your jobs</a>
+          <a class="nav-link" [routerLink]="'/posted'" (click)="isMenuCollapsed = true">Posted jobs</a>
         </li>
         <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
           <a class="nav-link" [routerLink]="'/jobs/post'" (click)="isMenuCollapsed = true">Post job</a>

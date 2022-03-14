@@ -83,10 +83,33 @@
             <h6 class="card-title ">{{ job.user?.organizationName }}</h6>
             <p class="card-text ">{{ job.description }}</p>
             <div class="col-auto text-end">
+              <p class="fw-bold"
+                 *ngIf="loggedUser.id !== job.userId && job.applied === true"
+                 [ngClass]="{'text-success': job?.accepted == true,'text-danger': job?.accepted == false, 'text-muted': job?.accepted == null}">
+                {{job?.accepted === true ? 'Accepted' : job?.accepted === false ? 'Rejected' : "Awaiting response"}}
+              </p>
               <div class="btn-group">
-                <button (click)="$event.stopPropagation(); onJobDelete(job.id)" class="btn btn-danger col-auto me-2">Delete</button>
-                <button (click)="$event.stopPropagation()" class="btn btn-success col-auto me-2">Apply</button>
-                <button (click)="$event.stopPropagation()" class="btn btn-outline-primary col-auto">Likes 0</button>
+                <button (click)="$event.stopPropagation(); onJobEdit(job.id)"
+                        *ngIf="loggedUser.id === job.userId"
+                        class="btn btn-warning col-auto me-2 shadow-none">
+                  Edit
+                </button>
+                <button (click)="$event.stopPropagation(); onJobDelete(job.id)"
+                        *ngIf="loggedUser.id === job.userId"
+                        class="btn btn-danger col-auto me-2 shadow-none">
+                  Delete
+                </button>
+                <button (click)="$event.stopPropagation(); onJobApply(job.id)"
+                        *ngIf="loggedUser.id !== job.userId"
+                        class="btn col-auto me-2 shadow-none"
+                        [ngClass]="(job?.applied === true) ? 'btn-success' : 'btn-outline-success'">
+                  {{(job?.applied === true) ? 'Applied' : 'Apply'}}
+                </button>
+                <button (click)="$event.stopPropagation(); onJobLike(job.id)"
+                        class="btn col-auto shadow-none"
+                        [ngClass]="[loggedUser.id === job.userId ? 'disabled' : '', (job.likedByMe === true) ? 'btn-primary': 'btn-outline-primary']">
+                  Likes {{job?.likes !== null ? job.likes.length : 0}}
+                </button>
               </div>
             </div>
           </div>

@@ -9,6 +9,8 @@ import {JobPostComponent} from "./job-post/job-post.component";
 import {JobsComponent} from "./jobs/jobs.component";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
 import {JobComponent} from "./job/job.component";
+import {JobsApplicationsComponent} from "./jobs-applications/jobs-applications.component";
+import {JobsOwnComponent} from "./jobs-own/jobs-own.component";
 
 @NgModule({
   imports: [
@@ -23,7 +25,9 @@ import {JobComponent} from "./job/job.component";
     HomeComponent,
     JobsComponent,
     JobPostComponent,
-    JobComponent
+    JobComponent,
+    JobsApplicationsComponent,
+    JobsOwnComponent
   ]
 })
 export class MainModule {

@@ -1,45 +1,46 @@
 {
   "users": [
     {
-      "id": 1,
-      "organizationName": "Organization",
-      "email": "organization@gmail.com",
-      "password": "organization",
-      "role": "organization"
+      "firstName": "test",
+      "lastName": "test",
+      "email": "test@abv.bg",
+      "password": "test",
+      "role": "user",
+      "id": 1
     },
     {
-      "id": 2,
-      "firstName": "user",
-      "lastName": "user",
+      "firstName": "sdfdsfdsf",
+      "lastName": "dsfdsfdsfdsfsdf",
       "email": "user@gmail.com",
       "password": "user",
-      "role": "user"
+      "role": "user",
+      "id": 2
     }
   ],
   "jobs": [
     {
       "id": 1,
       "userId": 1,
-      "title": "123456",
-      "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.\n\nThe standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
-      "jobTypeId": 2,
-      "jobCategoryId": 5
+      "title": "aasdasd",
+      "description": "asdas",
+      "jobTypeId": 3,
+      "jobCategoryId": 4
     },
     {
       "id": 2,
       "userId": 1,
-      "title": "qwewqe",
-      "description": "qweqwewqe",
-      "jobTypeId": 1,
-      "jobCategoryId": 3
+      "title": "asdsadsa",
+      "description": "dasdasdasdasd",
+      "jobTypeId": 3,
+      "jobCategoryId": 7
     },
     {
       "id": 3,
-      "userId": 1,
-      "title": "wqewq",
-      "description": "ewqewqewqeqwe",
-      "jobTypeId": 3,
-      "jobCategoryId": 1
+      "userId": 2,
+      "title": "dasdas",
+      "description": "asdasd",
+      "jobTypeId": 1,
+      "jobCategoryId": 4
     }
   ],
   "jobTypes": [
@@ -84,6 +85,36 @@
     {
       "id": 7,
       "name": "Industry manufacturing"
+    }
+  ],
+  "applications": [
+    {
+      "id": 1,
+      "jobId": 3,
+      "userId": 1,
+      "accepted": null
+    }
+  ],
+  "likes": [
+    {
+      "id": 1,
+      "jobId": 1,
+      "userId": 1
+    },
+    {
+      "id": 2,
+      "jobId": 2,
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "jobId": 2,
+      "userId": 2
+    },
+    {
+      "id": 4,
+      "jobId": 1,
+      "userId": 2
     }
   ]
 }

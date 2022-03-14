@@ -3,22 +3,20 @@ import {JobsService} from "../services/jobs.service";
 import {Router} from "@angular/router";
 import {Job} from "../models/job.model";
 import {take} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 import {map} from "rxjs/operators";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ApplicationsService} from "../services/applications.service";
-import {Application} from "../models/application.model";
 import {AuthService} from "../../auth/services/auth.service";
 import {LikesService} from "../services/likesService";
 import {Like} from "../models/like.model";
 import {User} from "../../auth/models/user.model";
 
 @Component({
-  selector: 'app-jobs',
-  templateUrl: './jobs.component.html',
-  styleUrls: ['./jobs.component.scss']
+  selector: 'app-jobs-applications',
+  templateUrl: './jobs-own.component.html',
+  styleUrls: ['./jobs-own.component.scss']
 })
-export class JobsComponent implements OnInit {
+export class JobsOwnComponent implements OnInit {
   jobs: Job[]
 
   loggedUser: User
@@ -63,7 +61,7 @@ export class JobsComponent implements OnInit {
           }
         )
 
-        return response
+        return response.filter(j => j.userId === this.loggedUser.id)
       }),
       take(1)
     ).subscribe({
@@ -86,7 +84,7 @@ export class JobsComponent implements OnInit {
     if(typeId === 0)
       _typeId = null;
 
-      this.getJobs(_typeId, _categoryId);
+    this.getJobs(_typeId, _categoryId);
   }
 
   onJobDelete(jobId: number): void {
@@ -99,38 +97,6 @@ export class JobsComponent implements OnInit {
 
   onJobClick(id: number) {
     this.router.navigate([`/jobs/${id}`])
-  }
-
-  onJobApply(jobId: number) {
-    const application: Application = {
-      id: null,
-      jobId: jobId,
-      userId: this.loggedUser.id,
-      accepted: null
-    }
-
-    // Only create application if it doesn't exist
-    this.applicationsService.getApplication$(application.jobId, application.userId).subscribe({
-      next: (response) => {
-        if(!response){
-          this.applicationsService.postApplication$(application).subscribe({
-            next: (response) => {
-              let oldJob = this.jobs.find(j => j.id === jobId)
-              oldJob.applications.push(response);
-              oldJob.applied = true;
-            }
-          });
-        }else{
-          this.applicationsService.deleteApplication$(response.id).subscribe({
-            next: (_) => {
-              let oldJob = this.jobs.find(j => j.id === jobId)
-              oldJob.applications = oldJob.applications.filter(c => c.id !== response.id)
-              oldJob.applied = false
-            }
-          });
-        }
-      }
-    });
   }
 
   onJobLike(jobId: number) {
@@ -161,6 +127,16 @@ export class JobsComponent implements OnInit {
         }
       }
     });
+  }
+
+  onJobGiveUp(jobId: number) {
+    this.applicationsService.deleteApplication$(jobId).subscribe({
+      next: (_) => {
+        let oldJob = this.jobs.find(j => j.id === jobId)
+        this.jobs = this.jobs.filter(j => j.id !== jobId)
+      }
+    });
+
   }
 
   onJobEdit(id: number) {

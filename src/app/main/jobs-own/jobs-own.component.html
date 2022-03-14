@@ -1,0 +1,108 @@
+<div [formGroup]="formGroup">
+  <div class="row justify-content-end">
+    <h3 class="col-xl-9 col-lg-9 col-md-8 col-12 my-4 h1">Posted Jobs</h3>
+  </div>
+  <div class="row justify-content-end">
+    <div class="btn-group col-xl-9 col-lg-9 col-md-8 col-12" data-toggle="buttons">
+      <input [value]=0 formControlName="typeId" type="radio" class="btn-check" id="option1" autocomplete="off" (change)="onChangeFilter()">
+      <label class="btn btn-outline-secondary shadow-none" for="option1">All</label>
+
+      <input [value]=1 formControlName="typeId" type="radio" class="btn-check" id="option2" autocomplete="off" (change)="onChangeFilter()">
+      <label class="btn btn-outline-secondary shadow-none" for="option2">Full-time</label>
+
+      <input [value]=2 formControlName="typeId" type="radio" class="btn-check shadow-none" id="option3" autocomplete="off" (change)="onChangeFilter()">
+      <label class="btn btn-outline-secondary shadow-none" for="option3">Part-time</label>
+
+      <input [value]=3 formControlName="typeId" type="radio" class="btn-check" id="option4" autocomplete="off" (change)="onChangeFilter()">
+      <label class="btn btn-outline-secondary shadow-none" for="option4">Remote</label>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-xl-3 col-lg-3 col-md-4 col-12 mb-3">
+      <div class="bg-light border p-4 shadow-sm">
+        <h3 class="mb-4">Categories</h3>
+        <div class="list-group">
+          <div class="form-check mt-1">
+            <input [value]=0 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault0" (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault0">
+              All
+            </label>
+          </div>
+          <div class="form-check mt-1">
+            <input [value]=1 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault1" (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault1">
+              Design & development
+            </label>
+          </div>
+          <div class="form-check mt-1">
+            <input [value]=2 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault2" (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault2">
+              Office administrative
+            </label>
+          </div>
+          <div class="form-check mt-1">
+            <input [value]=3 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault3"  (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault3">
+              Science & technology
+            </label>
+          </div>
+          <div class="form-check mt-1">
+            <input [value]=4 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault4"  (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault4">
+              Property development
+            </label>
+          </div>
+          <div class="form-check mt-1">
+            <input [value]=5 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault5"  (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault5">
+              Business development
+            </label>
+          </div>
+          <div class="form-check mt-1">
+            <input [value]=6 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault6"  (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault6">
+              Admin & accountant
+            </label>
+          </div>
+          <div class="form-check mt-1">
+            <input [value]=7 formControlName="categoryId" class="form-check-input" type="radio" id="flexRadioDefault7"  (change)="onChangeFilter()">
+            <label class="form-check-label" for="flexRadioDefault7">
+              Industry manufacturing
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-9 col-lg-9 col-md-8 col-12" >
+      <ng-container *ngIf="jobs?.length">
+        <div class="card shadow-sm mb-3 col-12 border-0" *ngFor="let job of jobs" (click)="onJobClick(job.id)">
+          <div [ngClass]="{'bg-danger': job.jobTypeId===1, 'bg-warning text-dark': job.jobTypeId===2 , 'bg-primary': job.jobTypeId===3}" class="card-header text-light">{{ job.jobType.name }}</div>
+          <div class="card-body text-dark">
+            <h3 class="card-title">{{ job.title }}</h3>
+            <h6 class="card-title ">{{ job.user?.organizationName }}</h6>
+            <p class="card-text ">{{ job.description }}</p>
+            <div class="col-auto text-end">
+              <div class="btn-group">
+                <button (click)="$event.stopPropagation(); onJobEdit(job.id)"
+                        *ngIf="loggedUser.id === job.userId"
+                        class="btn btn-warning col-auto me-2 shadow-none">
+                  Edit
+                </button>
+                <button (click)="$event.stopPropagation(); onJobDelete(job.id)"
+                        *ngIf="loggedUser.id === job.userId"
+                        class="btn btn-danger col-auto me-2 shadow-none">
+                  Delete
+                </button>
+                <button (click)="$event.stopPropagation(); onJobLike(job.id)"
+                        class="btn col-auto shadow-none btn-outline-primary disabled">
+                  Likes {{job?.likes !== null ? job.likes.length : 0}}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

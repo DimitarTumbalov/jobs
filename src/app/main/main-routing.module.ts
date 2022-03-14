@@ -5,6 +5,8 @@ import {HomeComponent} from "./home/home.component";
 import {JobPostComponent} from "./job-post/job-post.component";
 import {JobsComponent} from "./jobs/jobs.component";
 import {JobComponent} from "./job/job.component";
+import {JobsApplicationsComponent} from "./jobs-applications/jobs-applications.component";
+import {JobsOwnComponent} from "./jobs-own/jobs-own.component";
 
 const routes: Routes = [
   {
@@ -32,6 +34,15 @@ const routes: Routes = [
         path: 'jobs/:id',
         component: JobComponent
       },
+      {
+        path: 'applications',
+        component: JobsApplicationsComponent
+      }
+      ,
+      {
+        path: 'posted',
+        component: JobsOwnComponent
+      }
     ]
   }
 ];
