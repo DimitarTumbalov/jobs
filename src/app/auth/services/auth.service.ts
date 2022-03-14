@@ -1,22 +1,30 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import { Login } from '../models/login.model';
-import { Observable } from 'rxjs';
-import { User } from '../models/user.model';
-import { environment } from '../../../environments/environment';
-import { map } from 'rxjs/operators';
-import {Register} from "../models/register.model";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Login} from '../models/login.model';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {User} from '../models/user.model';
+import {environment} from '../../../environments/environment';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  currentUser$: Observable<User>
+  private currentUser: BehaviorSubject<User>
+
   constructor(private client: HttpClient) {
+    this.currentUser = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser$ = this.currentUser.asObservable();
+    console.log("constructor")
+  }
+
+  public get currentUserValue(): User {
+    return this.currentUser.value;
   }
 
   login$(data: Login): Observable<User | null> {
-    console.log('login')
     return this.client.get<User[]>(`${environment.apiUrl}/users`).pipe(
       map((response: User[]) => {
         const user = response.find(u => u.email === data.email && u.password === data.password);
@@ -34,8 +42,8 @@ export class AuthService {
   }
 
   logout(): void {
-    console.log('logout')
-    localStorage.removeItem('loggedUser');
+    localStorage.removeItem('currentUser');
+    this.currentUser.next(null);
   }
 
   getUserByEmail$(email: String): Observable<User | null> {
@@ -52,12 +60,9 @@ export class AuthService {
   }
 
   storeUserData(user: User): void {
-    console.log('storeUserData')
     delete user.password;
-    localStorage.setItem('loggedUser', JSON.stringify(user));
-  }
+    localStorage.setItem('currentUser', JSON.stringify(user));
 
-  getUserFromStorage(): User {
-    return JSON.parse(localStorage.getItem('loggedUser') || '{}');
+    this.currentUser.next(user);
   }
 }

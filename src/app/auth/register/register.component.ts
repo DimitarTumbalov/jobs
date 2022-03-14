@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {User} from "../models/user.model";
 import {HttpErrorResponse} from "@angular/common/http";
-import {Login} from "../models/login.model";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-register',
@@ -23,6 +23,8 @@ export class RegisterComponent implements OnInit {
   });
 
   isEmailUsed = false
+
+  destroy$ = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
@@ -58,13 +60,18 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
   onSubmit(): void {
     let role = this.formGroup.value.role
 
     let user: User;
 
-    if(role === 'user'){
-      if(this.firstNameControl.invalid
+    if (role === 'user') {
+      if (this.firstNameControl.invalid
         || this.lastNameFormControl.invalid
         || this.emailFormControl.invalid
         || this.passwordFormControl.invalid) {
@@ -82,8 +89,8 @@ export class RegisterComponent implements OnInit {
         password: this.formGroup.value.password,
         role
       };
-    }else {
-      if(this.organizationNameFormControl.invalid
+    } else {
+      if (this.organizationNameFormControl.invalid
         || this.emailFormControl.invalid
         || this.passwordFormControl.invalid) {
         this.formGroup.markAllAsTouched();
@@ -99,10 +106,10 @@ export class RegisterComponent implements OnInit {
       };
     }
 
-    this.authService.getUserByEmail$(user.email).subscribe({
+    this.authService.getUserByEmail$(user.email).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
-        if(response == null){
-          this.authService.register$(user).subscribe({
+        if (response == null) {
+          this.authService.register$(user).pipe(takeUntil(this.destroy$)).subscribe({
             next: (response) => {
               this.authService.storeUserData(response);
 
@@ -113,7 +120,7 @@ export class RegisterComponent implements OnInit {
               console.log(response.message);
             }
           })
-        }else{
+        } else {
           this.isEmailUsed = true
         }
       }

@@ -1,12 +1,14 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {MainComponent} from "./main.component";
 import {HomeComponent} from "./home/home.component";
 import {JobPostComponent} from "./job-post/job-post.component";
 import {JobsComponent} from "./jobs/jobs.component";
 import {JobComponent} from "./job/job.component";
 import {JobsApplicationsComponent} from "./jobs-applications/jobs-applications.component";
-import {JobsOwnComponent} from "./jobs-own/jobs-own.component";
+import {JobsPostedComponent} from "./jobs-posted/jobs-posted.component";
+import {OrganizationControlGuard} from "../guards/organization-control.guard";
+import {UserControlGuard} from "../guards/user-control.guard";
 
 const routes: Routes = [
   {
@@ -28,7 +30,8 @@ const routes: Routes = [
       },
       {
         path: 'jobs/post',
-        component: JobPostComponent
+        component: JobPostComponent,
+        canActivate: [OrganizationControlGuard]
       },
       {
         path: 'jobs/:id',
@@ -36,12 +39,14 @@ const routes: Routes = [
       },
       {
         path: 'applications',
-        component: JobsApplicationsComponent
+        component: JobsApplicationsComponent,
+        canActivate: [UserControlGuard]
       }
       ,
       {
         path: 'posted',
-        component: JobsOwnComponent
+        component: JobsPostedComponent,
+        canActivate: [OrganizationControlGuard]
       }
     ]
   }

@@ -1,76 +1,60 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light shadow-sm">
   <div class="container">
-    <a class="navbar-brand" [routerLink]="'.'">Jobs</a>
+    <a [routerLink]="'/home'" class="navbar-brand">Jobs</a>
 
-    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    <button (click)="isMenuCollapsed = !isMenuCollapsed" class="navbar-toggler" type="button">
       &#9776;
     </button>
 
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse justify-content-end">
       <ul class="navbar-nav">
-        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/home'" (click)="isMenuCollapsed = true">Home</a>
+        <li [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active-link']" class="nav-item">
+          <a (click)="isMenuCollapsed = true" [routerLink]="'/home'" class="nav-link">Home</a>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/jobs'" (click)="isMenuCollapsed = true">Jobs</a>
+        <li [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active-link']" class="nav-item">
+          <a (click)="isMenuCollapsed = true" [routerLink]="'/jobs'" class="nav-link">Jobs</a>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/applications'" (click)="isMenuCollapsed = true">Applications</a>
+        <li *ngIf="this.currentUser?.role === 'user'"
+            [routerLinkActiveOptions]="{exact:true}"
+            [routerLinkActive]="['active-link']" class="nav-item">
+          <a (click)="isMenuCollapsed = true" [routerLink]="'/applications'" class="nav-link">Applications</a>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/posted'" (click)="isMenuCollapsed = true">Posted jobs</a>
+        <li *ngIf="this.currentUser?.role === 'organization'"
+            [routerLinkActiveOptions]="{exact:true}"
+            [routerLinkActive]="['active-link']" class="nav-item">
+          <a (click)="isMenuCollapsed = true" [routerLink]="'/posted'" class="nav-link">Posted jobs</a>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'/jobs/post'" (click)="isMenuCollapsed = true">Post job</a>
+        <li *ngIf="this.currentUser?.role === 'organization'"
+            [routerLinkActiveOptions]="{exact:true}"
+            [routerLinkActive]="['active-link']" class="nav-item">
+          <a (click)="isMenuCollapsed = true" [routerLink]="'/jobs/post'" class="nav-link">Post job</a>
         </li>
-        <li class="nav-item" ngbDropdown>
-          <a class="nav-link" tabindex="0" ngbDropdownToggle id="navbarDropdown1" role="button">
-            Account
-          </a>
-          <div ngbDropdownMenu aria-labelledby="navbarDropdown1" class="dropdown-menu">
-            <a ngbDropdownItem class="text-danger">Hi, {{displayName}}</a>
-            <a ngbDropdownItem href="./account" (click)="isMenuCollapsed = true">Account info</a>
-            <a ngbDropdownItem (click)="onLogout(); isMenuCollapsed = true">Sign out</a>
+        <li *ngIf="this.currentUser" class="nav-item">
+          <div class="d-inline-block float_right" display="dynamic"
+               ngbDropdown
+               placement="bottom-right">
+            <a class="nav-link" id="navbarDropdown1" ngbDropdownToggle role="button" tabindex="0">
+              Account
+            </a>
+            <div aria-labelledby="navbarDropdown1" class="dropdown-menu" ngbDropdownMenu>
+              <a class="text-danger" ngbDropdownItem>Hi, {{displayName}}</a>
+              <a (click)="isMenuCollapsed = true" ngbDropdownItem>Account info</a>
+              <a (click)="onLogout(); isMenuCollapsed = true" ngbDropdownItem>Sign out</a>
+            </div>
           </div>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'./auth/login'" (click)="isMenuCollapsed = true">Sign in</a>
+        <li [routerLinkActiveOptions]="{exact:true}" [routerLinkActive]="['active-link']" class="nav-item">
+          <a (click)="isMenuCollapsed = true"
+             *ngIf="!this.currentUser"
+             [routerLink]="'./auth/login'" class="nav-link">
+            Sign in</a>
         </li>
-        <li class="nav-item" [routerLinkActive]="['active-link']" [routerLinkActiveOptions]="{exact:true}">
-          <a class="nav-link" [routerLink]="'./auth/register'" (click)="isMenuCollapsed = true">Sign up</a>
+        <li *ngIf="!this.currentUser"
+            [routerLinkActiveOptions]="{exact:true}"
+            [routerLinkActive]="['active-link']" class="nav-item">
+          <a (click)="isMenuCollapsed = true" [routerLink]="'./auth/register'" class="nav-link">Sign up</a>
         </li>
       </ul>
     </div>
   </div>
 </nav>
-
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--  <div class="container-fluid">-->
-<!--    <a class="navbar-brand" href="#">Jobs</a>-->
-<!--    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--      <span class="navbar-toggler-icon"></span>-->
-<!--    </button>-->
-<!--    <div class="collapse navbar-collapse" id="navbarNavDropdown">-->
-<!--      <ul class="navbar-nav">-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link active" aria-current="page" href="/home">Home</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" href="/applications">Applications</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item">-->
-<!--          <a class="nav-link" href="/post_job">Post job</a>-->
-<!--        </li>-->
-<!--        <li class="nav-item dropdown">-->
-<!--          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--            Account-->
-<!--          </a>-->
-<!--          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
-<!--            <li><a class="dropdown-item" href="/account">Account Info</a></li>-->
-<!--            <li><a class="dropdown-item" >Sign out</a></li>-->
-<!--          </ul>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</nav>-->

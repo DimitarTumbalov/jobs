@@ -17,10 +17,10 @@ export class JobsService {
   getJobs$(typeId: number = null, categoryId: number = null): Observable<Job[]> {
     let finalUrl = `${this.url}?_expand=jobType&_expand=jobCategory&_expand=user&_embed=likes&_embed=applications`;
 
-    if(typeId != null)
+    if (typeId != null)
       finalUrl = finalUrl + `&jobTypeId=${typeId}`
 
-    if(categoryId != null)
+    if (categoryId != null)
       finalUrl = finalUrl + `&jobCategoryId=${categoryId}`
 
     return this.http.get<Job[]>(finalUrl);

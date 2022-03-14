@@ -1,12 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import {AuthGuard} from "./guards/auth.guard";
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./main/main.module').then(m => m.MainModule),
-    canLoad: [AuthGuard]
+    loadChildren: () => import('./main/main.module').then(m => m.MainModule)
   },
   {
     path: 'auth',
@@ -16,7 +14,6 @@ const routes: Routes = [
     path: '**',
     redirectTo: '/home',
     pathMatch: 'full',
-    canLoad: [AuthGuard]
   }
 ];
 

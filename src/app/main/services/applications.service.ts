@@ -2,10 +2,8 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Job} from "../models/job.model";
 import {Application} from "../models/application.model";
 import {map} from "rxjs/operators";
-import {User} from "../../auth/models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +11,7 @@ import {User} from "../../auth/models/user.model";
 export class ApplicationsService {
 
   private url = `${environment.apiUrl}/applications`;
+
   constructor(private http: HttpClient) {
   }
 
@@ -33,7 +32,6 @@ export class ApplicationsService {
 
     return this.http.get<Application []>(url).pipe(
       map((response) => {
-        console.log(JSON.stringify(response))
         const application = response.find(a => a?.jobId == jobId && a?.userId === userId);
 
         if (application)

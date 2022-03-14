@@ -2,9 +2,7 @@ import {Injectable} from "@angular/core";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Job} from "../models/job.model";
 import {Like} from "../models/like.model";
-import {Application} from "../models/application.model";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -28,12 +26,11 @@ export class LikesService {
 
     return this.http.get<Like[]>(url).pipe(
       map((response) => {
-        console.log(JSON.stringify(response))
         const like = response?.find(l => l?.userId === userId && l?.jobId === jobId);
 
-        if (like){
+        if (like) {
           return like;
-        }else{
+        } else {
           return null;
         }
 

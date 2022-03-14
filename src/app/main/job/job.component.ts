@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {JobsService} from "../services/jobs.service";
 import {of, Subject, switchMap, takeUntil} from "rxjs";
@@ -26,13 +26,14 @@ export class JobComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private jobsService: JobsService,
-    private authService: AuthService,
+    public authService: AuthService,
     private likesService: LikesService,
     private applicationsService: ApplicationsService
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    this.loggedUser = this.authService.getUserFromStorage()
+    this.loggedUser = this.authService.currentUserValue;
 
     this.route.params.pipe(
       switchMap((params) => {
@@ -44,23 +45,13 @@ export class JobComponent implements OnInit {
         return of(null);
       }),
       takeUntil(this.destroy$)
-    ).subscribe({
+    ).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
         if (response) {
           response.likedByMe = response.likes?.find(l => l.userId === this.loggedUser.id) != null;
           response.applied = response.applications?.find(c => c.userId === this.loggedUser.id) != null;
 
-          response.applications.forEach( a => {
-            this.applicationsService.getApplications$().subscribe({
-              next: (response2) => {
-
-                response2.filter(a => response.applications.find(oa => oa.id === a.id) !== null)
-                response.applications = response2
-
-                this.job = response;
-              }
-            })
-          })
+          this.job = response;
         }
       }
     });
@@ -71,8 +62,9 @@ export class JobComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  onJobDelete(){
-    this.jobsService.deleteBook$(this.job.id).subscribe({
+  onJobDelete() {
+    this.jobsService.deleteBook$(this.job.id)
+      .pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.router.navigate(['/jobs'])
       }
@@ -80,6 +72,11 @@ export class JobComponent implements OnInit {
   }
 
   onJobApply() {
+    if (!this.loggedUser) {
+      this.router.navigate(['/auth', 'login']);
+      return;
+    }
+
     const application: Application = {
       id: null,
       jobId: this.job.id,
@@ -88,17 +85,20 @@ export class JobComponent implements OnInit {
     }
 
     // Only create application if it doesn't exist
-    this.applicationsService.getApplication$(application.jobId, application.userId).subscribe({
+    this.applicationsService.getApplication$(application.jobId, application.userId)
+      .pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
-        if(!response){
-          this.applicationsService.postApplication$(application).subscribe({
+        if (!response) {
+          this.applicationsService.postApplication$(application)
+            .pipe(takeUntil(this.destroy$)).subscribe({
             next: (response) => {
               this.job.applications.push(response);
               this.job.applied = true;
             }
           });
-        }else{
-          this.applicationsService.deleteApplication$(response.id).subscribe({
+        } else {
+          this.applicationsService.deleteApplication$(response.id)
+            .pipe(takeUntil(this.destroy$)).subscribe({
             next: (_) => {
               this.job.applications = this.job.applications.filter(c => c.id !== response.id)
               this.job.applied = false
@@ -110,23 +110,29 @@ export class JobComponent implements OnInit {
   }
 
   onJobLike() {
+    if (!this.loggedUser) {
+      this.router.navigate(['/auth', 'login']);
+      return;
+    }
+
     const like: Like = {
       id: null,
       jobId: this.job.id,
       userId: this.loggedUser.id
     }
 
-    this.likesService.getLike$(like.userId, like.jobId).subscribe({
+    this.likesService.getLike$(like.userId, like.jobId)
+      .pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
-        if(!response){
-          this.likesService.postLike$(like).subscribe({
+        if (!response) {
+          this.likesService.postLike$(like).pipe(takeUntil(this.destroy$)).subscribe({
             next: (response) => {
               this.job.likes.push(response);
               this.job.likedByMe = true;
             }
           });
-        }else{
-          this.likesService.deleteLike$(response.id).subscribe({
+        } else {
+          this.likesService.deleteLike$(response.id).pipe(takeUntil(this.destroy$)).subscribe({
             next: (_) => {
               this.job.likes = this.job.likes.filter(l => l.id !== response.id)
               this.job.likedByMe = false
@@ -142,7 +148,7 @@ export class JobComponent implements OnInit {
 
     delete application.user && application.job;
 
-    this.applicationsService.putApplication$(application).subscribe(
+    this.applicationsService.putApplication$(application).pipe(takeUntil(this.destroy$)).subscribe(
     )
   }
 
@@ -151,7 +157,7 @@ export class JobComponent implements OnInit {
 
     delete application.user && application.job;
 
-    this.applicationsService.putApplication$(application).subscribe(
+    this.applicationsService.putApplication$(application).pipe(takeUntil(this.destroy$)).subscribe(
     )
   }
 }

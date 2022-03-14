@@ -1,7 +1,6 @@
-import { CanLoad, Route, Router, UrlSegment } from '@angular/router';
-import { Injectable } from '@angular/core';
-import { AuthService } from '../auth/services/auth.service';
-import {User} from "../auth/models/user.model";
+import {CanLoad, Route, Router, UrlSegment} from '@angular/router';
+import {Injectable} from '@angular/core';
+import {AuthService} from '../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +14,12 @@ export class AuthGuard implements CanLoad {
   }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean {
-    const loggedUser = this.authService.getUserFromStorage();
+    const loggedUser = this.authService.currentUserValue
 
     if (!loggedUser) {
       this.router.navigate(['/auth', 'login']);
-
-      return false;
-    }
-
-    return true;
+      return false
+    } else
+      return true
   }
 }

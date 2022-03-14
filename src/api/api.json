@@ -15,17 +15,24 @@
       "password": "user",
       "role": "user",
       "id": 2
+    },
+    {
+      "firstName": "adasd",
+      "lastName": "asasdsad",
+      "email": "asasdasd@asd",
+      "password": "asdsad",
+      "role": "user",
+      "id": 3
+    },
+    {
+      "organizationName": "orgz",
+      "email": "orgz@abv.bg",
+      "password": "orgz",
+      "role": "organization",
+      "id": 4
     }
   ],
   "jobs": [
-    {
-      "id": 1,
-      "userId": 1,
-      "title": "aasdasd",
-      "description": "asdas",
-      "jobTypeId": 3,
-      "jobCategoryId": 4
-    },
     {
       "id": 2,
       "userId": 1,
@@ -33,14 +40,6 @@
       "description": "dasdasdasdasd",
       "jobTypeId": 3,
       "jobCategoryId": 7
-    },
-    {
-      "id": 3,
-      "userId": 2,
-      "title": "dasdas",
-      "description": "asdasd",
-      "jobTypeId": 1,
-      "jobCategoryId": 4
     }
   ],
   "jobTypes": [
@@ -87,33 +86,11 @@
       "name": "Industry manufacturing"
     }
   ],
-  "applications": [
-    {
-      "id": 1,
-      "jobId": 3,
-      "userId": 1,
-      "accepted": null
-    }
-  ],
+  "applications": [],
   "likes": [
-    {
-      "id": 1,
-      "jobId": 1,
-      "userId": 1
-    },
     {
       "id": 2,
       "jobId": 2,
-      "userId": 1
-    },
-    {
-      "id": 3,
-      "jobId": 2,
-      "userId": 2
-    },
-    {
-      "id": 4,
-      "jobId": 1,
       "userId": 2
     }
   ]

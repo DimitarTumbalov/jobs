@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {JobsService} from "../services/jobs.service";
 import {Router} from "@angular/router";
 import {Job} from "../models/job.model";
-import {take} from "rxjs";
+import {Subject, take, takeUntil} from "rxjs";
 import {map} from "rxjs/operators";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ApplicationsService} from "../services/applications.service";
@@ -13,18 +13,19 @@ import {User} from "../../auth/models/user.model";
 
 @Component({
   selector: 'app-jobs-applications',
-  templateUrl: './jobs-own.component.html',
-  styleUrls: ['./jobs-own.component.scss']
+  templateUrl: './jobs-posted.component.html',
+  styleUrls: ['./jobs-posted.component.scss']
 })
-export class JobsOwnComponent implements OnInit {
-  jobs: Job[]
-
-  loggedUser: User
+export class JobsPostedComponent implements OnInit {
+  jobs: Job[];
+  loggedUser: User;
 
   formGroup: FormGroup = this.fb.group({
     typeId: 0,
     categoryId: 0
   });
+
+  destroy$ = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
@@ -32,17 +33,23 @@ export class JobsOwnComponent implements OnInit {
     private applicationsService: ApplicationsService,
     private authService: AuthService,
     private likesService: LikesService,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   ngOnInit(): void {
-    this.loggedUser = this.authService.getUserFromStorage()
+    this.loggedUser = this.authService.currentUserValue;
 
     this.getJobs()
   }
 
-  getJobs(typeId: number = null, categoryId: number = null){
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
+  getJobs(typeId: number = null, categoryId: number = null) {
     this.jobsService.getJobs$(typeId, categoryId).pipe(
-      map((response:  Job[]) => {
+      map((response: Job[]) => {
         response.sort((a, b) => {
           if (a.title < b.title) {
             return -1;
@@ -55,7 +62,7 @@ export class JobsOwnComponent implements OnInit {
           return 0;
         });
 
-        response.forEach( job => {
+        response.forEach(job => {
             job.likedByMe = job.likes.find(l => l.userId === this.loggedUser.id) != null;
             job.applied = job.applications.find(c => c.userId === this.loggedUser.id) != null;
           }
@@ -64,7 +71,7 @@ export class JobsOwnComponent implements OnInit {
         return response.filter(j => j.userId === this.loggedUser.id)
       }),
       take(1)
-    ).subscribe({
+    ).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response: Job[]) => {
         this.jobs = response;
       }
@@ -75,20 +82,20 @@ export class JobsOwnComponent implements OnInit {
     let categoryId = this.formGroup.value.categoryId;
     let _categoryId = categoryId;
 
-    if(categoryId === 0)
+    if (categoryId === 0)
       _categoryId = null;
 
     let typeId = this.formGroup.value.typeId;
     let _typeId = typeId;
 
-    if(typeId === 0)
+    if (typeId === 0)
       _typeId = null;
 
     this.getJobs(_typeId, _categoryId);
   }
 
   onJobDelete(jobId: number): void {
-    this.jobsService.deleteBook$(jobId).subscribe({
+    this.jobsService.deleteBook$(jobId).pipe(takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.jobs = this.jobs.filter(book => book.id !== jobId);
       }
@@ -106,18 +113,18 @@ export class JobsOwnComponent implements OnInit {
       userId: this.loggedUser.id
     }
 
-    this.likesService.getLike$(like.userId, like.jobId).subscribe({
+    this.likesService.getLike$(like.userId, like.jobId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
-        if(!response){
-          this.likesService.postLike$(like).subscribe({
+        if (!response) {
+          this.likesService.postLike$(like).pipe(takeUntil(this.destroy$)).subscribe({
             next: (response) => {
               let oldJob = this.jobs.find(j => j.id === jobId)
               oldJob.likes.push(response);
               oldJob.likedByMe = true;
             }
           });
-        }else{
-          this.likesService.deleteLike$(response.id).subscribe({
+        } else {
+          this.likesService.deleteLike$(response.id).pipe(takeUntil(this.destroy$)).subscribe({
             next: (_) => {
               let previousJob = this.jobs.find(j => j.id === jobId)
               previousJob.likes = previousJob.likes.filter(l => l.id !== response.id)
@@ -130,7 +137,7 @@ export class JobsOwnComponent implements OnInit {
   }
 
   onJobGiveUp(jobId: number) {
-    this.applicationsService.deleteApplication$(jobId).subscribe({
+    this.applicationsService.deleteApplication$(jobId).pipe(takeUntil(this.destroy$)).subscribe({
       next: (_) => {
         let oldJob = this.jobs.find(j => j.id === jobId)
         this.jobs = this.jobs.filter(j => j.id !== jobId)

@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from '../auth/services/auth.service';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import {AuthService} from '../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OcGuard implements CanActivate {
+export class OrganizationControlGuard implements CanActivate {
 
   constructor(
     private authService: AuthService,
@@ -14,7 +14,7 @@ export class OcGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const loggedUser = this.authService.getUserFromStorage();
+    const loggedUser = this.authService.currentUserValue;
 
     if (loggedUser?.role !== 'organization') {
       this.router.navigate(['/']);

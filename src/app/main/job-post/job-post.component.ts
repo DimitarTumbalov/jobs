@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {JobsService} from "../services/jobs.service";
 import {AuthService} from "../../auth/services/auth.service";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-job-post',
@@ -10,6 +11,7 @@ import {AuthService} from "../../auth/services/auth.service";
   styleUrls: ['./job-post.component.scss']
 })
 export class JobPostComponent implements OnInit {
+  destroy$ = new Subject<boolean>();
 
   formGroup: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -48,14 +50,19 @@ export class JobPostComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(){
-    if(this.formGroup.invalid) {
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
+  onSubmit() {
+    if (this.formGroup.invalid) {
       this.formGroup.markAllAsTouched();
 
       return
     }
 
-    let loggedUser = this.authService.getUserFromStorage()
+    let loggedUser = this.authService.currentUserValue;
 
     const job = {
       id: null,
@@ -66,7 +73,7 @@ export class JobPostComponent implements OnInit {
       jobCategoryId: this.formGroup.value.jobCategoryId
     };
 
-    this.jobsService.postJob$(job).subscribe({
+    this.jobsService.postJob$(job).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
         this.router.navigate(['/jobs'])
       }
