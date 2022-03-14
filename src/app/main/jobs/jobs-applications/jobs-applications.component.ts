@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {JobsService} from "../services/jobs.service";
+import {JobsService} from "../../services/jobs.service";
 import {Router} from "@angular/router";
-import {Job} from "../models/job.model";
+import {Job} from "../../models/job.model";
 import {Subject, take, takeUntil} from "rxjs";
 import {map} from "rxjs/operators";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {ApplicationsService} from "../services/applications.service";
-import {AuthService} from "../../auth/services/auth.service";
-import {LikesService} from "../services/likesService";
-import {Like} from "../models/like.model";
-import {User} from "../../auth/models/user.model";
+import {ApplicationsService} from "../../services/applications.service";
+import {AuthService} from "../../../auth/services/auth.service";
+import {LikesService} from "../../services/likesService";
+import {Like} from "../../models/like.model";
+import {User} from "../../../auth/models/user.model";
 
 @Component({
   selector: 'app-jobs-applications',
@@ -17,7 +17,7 @@ import {User} from "../../auth/models/user.model";
   styleUrls: ['./jobs-applications.component.scss']
 })
 export class JobsApplicationsComponent implements OnInit {
-  loggedUser: User
+  currentUser: User
   jobs: Job[]
 
   formGroup: FormGroup = this.fb.group({
@@ -37,7 +37,7 @@ export class JobsApplicationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loggedUser = this.authService.currentUserValue
+    this.currentUser = this.authService.currentUserValue
 
     this.getJobs()
   }
@@ -63,8 +63,8 @@ export class JobsApplicationsComponent implements OnInit {
         });
 
         response.forEach(job => {
-            job.likedByMe = job.likes.find(l => l.userId === this.loggedUser.id) != null;
-            job.applied = job.applications.find(c => c.userId === this.loggedUser.id) != null;
+            job.likedByMe = job.likes.find(l => l.userId === this.currentUser.id) != null;
+            job.applied = job.applications.find(c => c.userId === this.currentUser.id) != null;
           }
         )
 
@@ -102,7 +102,7 @@ export class JobsApplicationsComponent implements OnInit {
     const like: Like = {
       id: null,
       jobId: jobId,
-      userId: this.loggedUser.id
+      userId: this.currentUser.id
     }
 
     this.likesService.getLike$(like.userId, like.jobId).pipe(takeUntil(this.destroy$)).subscribe({
@@ -129,7 +129,7 @@ export class JobsApplicationsComponent implements OnInit {
   }
 
   onJobGiveUp(jobId: number) {
-    const application = this.jobs.find(j => j.id = jobId)?.applications.find(a => a.userId == this.loggedUser.id)
+    const application = this.jobs.find(j => j.id = jobId)?.applications.find(a => a.userId == this.currentUser.id)
     this.applicationsService.deleteApplication$(application.id).pipe(takeUntil(this.destroy$)).subscribe({
       next: (_) => {
         this.jobs = this.jobs.filter(j => j.id !== jobId)

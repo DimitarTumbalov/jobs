@@ -11,6 +11,7 @@ export interface Job {
   description: string;
   jobTypeId: number;
   jobCategoryId: number;
+  isActive: Boolean;
   jobType?: JobType;
   jobCategory?: JobCategory;
   user?: User;

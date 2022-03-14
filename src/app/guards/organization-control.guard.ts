@@ -14,9 +14,9 @@ export class OrganizationControlGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const loggedUser = this.authService.currentUserValue;
+    const currentUser = this.authService.currentUserValue;
 
-    if (loggedUser?.role !== 'organization') {
+    if (currentUser?.role !== 'organization') {
       this.router.navigate(['/']);
 
       return false;

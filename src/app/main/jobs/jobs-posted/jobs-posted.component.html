@@ -114,12 +114,12 @@
               </div>
               <div class="btn-group" style="flex-wrap: wrap;">
                 <button (click)="$event.stopPropagation(); onJobEdit(job.id)"
-                        *ngIf="loggedUser.id === job.userId"
+                        *ngIf="currentUser.id === job.userId"
                         class="btn btn-warning col-auto me-2 shadow-none">
                   Edit
                 </button>
                 <button (click)="$event.stopPropagation(); onJobDelete(job.id)"
-                        *ngIf="loggedUser.id === job.userId"
+                        *ngIf="currentUser.id === job.userId"
                         class="btn btn-danger col-auto me-2 shadow-none">
                   Delete
                 </button>

@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {JobsService} from "../services/jobs.service";
+import {JobsService} from "../../services/jobs.service";
 import {of, Subject, switchMap, takeUntil} from "rxjs";
-import {Job} from "../models/job.model";
-import {User} from "../../auth/models/user.model";
-import {AuthService} from "../../auth/services/auth.service";
-import {Application} from "../models/application.model";
-import {Like} from "../models/like.model";
-import {LikesService} from "../services/likesService";
-import {ApplicationsService} from "../services/applications.service";
+import {Job} from "../../models/job.model";
+import {User} from "../../../auth/models/user.model";
+import {AuthService} from "../../../auth/services/auth.service";
+import {Application} from "../../models/application.model";
+import {Like} from "../../models/like.model";
+import {LikesService} from "../../services/likesService";
+import {ApplicationsService} from "../../services/applications.service";
 
 @Component({
   selector: 'app-job',
@@ -18,7 +18,7 @@ import {ApplicationsService} from "../services/applications.service";
 export class JobComponent implements OnInit {
   job: Job;
 
-  loggedUser: User
+  currentUser: User
 
   destroy$ = new Subject<boolean>();
 
@@ -33,7 +33,7 @@ export class JobComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loggedUser = this.authService.currentUserValue;
+    this.currentUser = this.authService.currentUserValue;
 
     this.route.params.pipe(
       switchMap((params) => {
@@ -48,8 +48,8 @@ export class JobComponent implements OnInit {
     ).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
         if (response) {
-          response.likedByMe = response.likes?.find(l => l.userId === this.loggedUser.id) != null;
-          response.applied = response.applications?.find(c => c.userId === this.loggedUser.id) != null;
+          response.likedByMe = response.likes?.find(l => l.userId === this.currentUser.id) != null;
+          response.applied = response.applications?.find(c => c.userId === this.currentUser.id) != null;
 
           this.job = response;
         }
@@ -72,7 +72,7 @@ export class JobComponent implements OnInit {
   }
 
   onJobApply() {
-    if (!this.loggedUser) {
+    if (!this.currentUser) {
       this.router.navigate(['/auth', 'login']);
       return;
     }
@@ -80,7 +80,7 @@ export class JobComponent implements OnInit {
     const application: Application = {
       id: null,
       jobId: this.job.id,
-      userId: this.loggedUser.id,
+      userId: this.currentUser.id,
       accepted: null
     }
 
@@ -110,7 +110,7 @@ export class JobComponent implements OnInit {
   }
 
   onJobLike() {
-    if (!this.loggedUser) {
+    if (!this.currentUser) {
       this.router.navigate(['/auth', 'login']);
       return;
     }
@@ -118,7 +118,7 @@ export class JobComponent implements OnInit {
     const like: Like = {
       id: null,
       jobId: this.job.id,
-      userId: this.loggedUser.id
+      userId: this.currentUser.id
     }
 
     this.likesService.getLike$(like.userId, like.jobId)
@@ -159,5 +159,9 @@ export class JobComponent implements OnInit {
 
     this.applicationsService.putApplication$(application).pipe(takeUntil(this.destroy$)).subscribe(
     )
+  }
+
+  onJobEdit(id: number) {
+    this.router.navigate(['/jobs', 'edit', id]);
   }
 }

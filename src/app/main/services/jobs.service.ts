@@ -36,7 +36,7 @@ export class JobsService {
     return this.http.post<Job>(this.url, job);
   }
 
-  putBook$(job: Job): Observable<Job> {
+  updateJob$(job: Job): Observable<Job> {
     const url = `${this.url}/${job.id}`;
 
     return this.http.put<Job>(url, job);

@@ -14,9 +14,9 @@ export class UserControlGuard implements CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const loggedUser = this.authService.currentUserValue;
+    const currentUser = this.authService.currentUserValue;
 
-    if (loggedUser?.role !== 'user') {
+    if (currentUser?.role !== 'user') {
       this.router.navigate(['/']);
 
       return false;

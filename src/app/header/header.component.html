@@ -38,7 +38,7 @@
             </a>
             <div aria-labelledby="navbarDropdown1" class="dropdown-menu" ngbDropdownMenu>
               <a class="text-danger" ngbDropdownItem>Hi, {{displayName}}</a>
-              <a (click)="isMenuCollapsed = true" ngbDropdownItem>Account info</a>
+              <a (click)="isMenuCollapsed = true" [routerLink]="'/account'" ngbDropdownItem>Account info</a>
               <a (click)="onLogout(); isMenuCollapsed = true" ngbDropdownItem>Sign out</a>
             </div>
           </div>

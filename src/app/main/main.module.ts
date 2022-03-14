@@ -5,12 +5,13 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HomeComponent} from "./home/home.component";
 import {MainRoutingModule} from "./main-routing.module";
 import {MainComponent} from "./main.component";
-import {JobPostComponent} from "./job-post/job-post.component";
-import {JobsComponent} from "./jobs/jobs.component";
+import {JobFormComponent} from "./jobs/job-form/job-form.component";
+import {JobsComponent} from "./jobs/jobs/jobs.component";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
-import {JobComponent} from "./job/job.component";
-import {JobsApplicationsComponent} from "./jobs-applications/jobs-applications.component";
-import {JobsPostedComponent} from "./jobs-posted/jobs-posted.component";
+import {JobComponent} from "./jobs/job/job.component";
+import {JobsApplicationsComponent} from "./jobs/jobs-applications/jobs-applications.component";
+import {JobsPostedComponent} from "./jobs/jobs-posted/jobs-posted.component";
+import {AccountComponent} from "./account/account.component";
 
 @NgModule({
   imports: [
@@ -24,10 +25,11 @@ import {JobsPostedComponent} from "./jobs-posted/jobs-posted.component";
     MainComponent,
     HomeComponent,
     JobsComponent,
-    JobPostComponent,
+    JobFormComponent,
     JobComponent,
     JobsApplicationsComponent,
-    JobsPostedComponent
+    JobsPostedComponent,
+    AccountComponent
   ]
 })
 export class MainModule {

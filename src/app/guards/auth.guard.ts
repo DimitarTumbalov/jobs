@@ -14,9 +14,9 @@ export class AuthGuard implements CanLoad {
   }
 
   canLoad(route: Route, segments: UrlSegment[]): boolean {
-    const loggedUser = this.authService.currentUserValue
+    const currentUser = this.authService.currentUserValue
 
-    if (!loggedUser) {
+    if (!currentUser) {
       this.router.navigate(['/auth', 'login']);
       return false
     } else

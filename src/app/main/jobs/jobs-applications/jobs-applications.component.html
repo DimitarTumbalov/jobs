@@ -1,6 +1,6 @@
 <div [formGroup]="formGroup">
   <div class="row justify-content-end">
-    <h3 class="col-xl-9 col-lg-9 col-md-8 col-12 my-4 h1">Jobs</h3>
+    <h3 class="col-xl-9 col-lg-9 col-md-8 col-12 my-4 h1">Applications</h3>
   </div>
   <div class="row justify-content-end">
     <div class="btn-group col-xl-9 col-lg-9 col-md-8 col-12" data-toggle="buttons">
@@ -106,44 +106,30 @@
             class="card-header text-light">{{ job.jobType.name }}</div>
           <div class="card-body text-dark">
             <h3 class="card-title">{{ job.title }}</h3>
-            <h1 class="card-title ">{{ job.user?.organizationName }}</h1>
+            <h6 class="card-title ">{{ job.user?.organizationName }}</h6>
             <p class="card-text ">{{ job.description }}</p>
 
             <div class="d-flex flex-row justify-content-end">
-              <div *ngIf="loggedUser?.id !== job?.userId && job?.applied === true"
+              <div *ngIf="currentUser.id !== job.userId && job.applied === true"
                    [ngClass]="{'text-success': job?.accepted == true,'text-danger': job?.accepted == false, 'text-muted': job?.accepted == null}"
-                   class="me-auto my-auto">
+                   class="me-auto my-auto text-center">
                 {{job?.accepted === true ? 'Accepted' : job?.accepted === false ? 'Rejected' : "Awaiting response"}}
               </div>
-              <div *ngIf="loggedUser?.id === job.userId"
-                   class="me-auto my-auto text-center text-muted">
-                Candidates: {{job?.applications?.length !== null ? job?.applications?.length : 0}}
-              </div>
               <div class="btn-group" style="flex-wrap: wrap;">
-                <button (click)="$event.stopPropagation(); onJobEdit(job.id)"
-                        *ngIf="loggedUser?.id === job.userId"
-                        class="btn btn-warning col-auto me-2 shadow-none">
-                  Edit
-                </button>
-                <button (click)="$event.stopPropagation(); onJobDelete(job.id)"
-                        *ngIf="loggedUser?.id === job.userId"
-                        class="btn btn-danger col-auto me-2 shadow-none">
-                  Delete
-                </button>
-                <button (click)="$event.stopPropagation(); onJobApply(job.id)"
-                        *ngIf="loggedUser?.id !== job.userId"
-                        [ngClass]="(job?.applied === true) ? 'btn-success' : 'btn-outline-success'"
-                        class="btn col-auto me-2 shadow-none">
-                  {{(job?.applied === true) ? 'Applied' : 'Apply'}}
+                <button (click)="$event.stopPropagation(); onJobGiveUp(job.id)"
+                        class="btn col-auto me-2 shadow-none btn-success">
+                  Applied
                 </button>
                 <button (click)="$event.stopPropagation(); onJobLike(job.id)"
-                        [ngClass]="[loggedUser?.id === job.userId ? 'disabled' : '', (job?.likedByMe === true) ? 'btn-primary': 'btn-outline-primary']"
+                        *ngIf="currentUser.id !== job.userId"
+                        [ngClass]="(job.likedByMe === true) ? 'btn-primary': 'btn-outline-primary'"
                         class="btn col-auto shadow-none">
                   Likes {{job?.likes !== null ? job.likes.length : 0}}
                 </button>
               </div>
             </div>
           </div>
+
         </div>
       </ng-container>
     </div>
