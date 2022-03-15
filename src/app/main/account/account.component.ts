@@ -134,8 +134,6 @@ export class AccountComponent implements OnInit {
       };
     }
 
-    console.log(JSON.stringify(user))
-
     this.formGroup.disable()
     this.authService.getUserByEmail$(user.email).pipe(takeUntil(this.destroy$)).subscribe({
       next: (response) => {
@@ -143,15 +141,12 @@ export class AccountComponent implements OnInit {
           this.authService.updateUser$(user).pipe(takeUntil(this.destroy$)).subscribe({
             next: (response) => {
               this.authService.storeUserData(response);
-              console.log('edit saved')
             },
             error: (response: HttpErrorResponse) => {
-              console.log(response.message);
               this.formGroup.enable()
             }
           })
         } else {
-          console.log('email exists')
           this.isEmailUsed = true
         }
       }

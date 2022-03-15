@@ -3,7 +3,6 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {User} from "../models/user.model";
-import {HttpErrorResponse} from "@angular/common/http";
 import {Subject, takeUntil} from "rxjs";
 
 @Component({
@@ -115,9 +114,6 @@ export class RegisterComponent implements OnInit {
 
               // 3. navigate inside system
               this.router.navigate(['/']);
-            },
-            error: (response: HttpErrorResponse) => {
-              console.log(response.message);
             }
           })
         } else {

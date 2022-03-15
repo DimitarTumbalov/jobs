@@ -28,13 +28,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.currentUser$.pipe(takeUntil(this.destroy$)).subscribe(
-      value => {
-        if (value)
-
-          console.log(`login new value:`)
-      }
-    )
   }
 
   ngOnDestroy(): void {

@@ -1,1 +1,66 @@
-<p>Home works!</p>
+<div class="d-flex flex-row justify-content-center mt-4">
+  <h1>Find your dream job</h1>
+</div>
+<div class="row mt-4">
+  <div class="col-4">
+    <div (click)="onFilterJobs(1, 0)" class="card border-danger mb-3 col-12 shadow-sm  user-select-none">
+      <div class="card-body text-danger">
+        <h3 class="card-title">Full-time jobs</h3>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div (click)="onFilterJobs(2, 0)" class="card border-warning mb-3 col-12 shadow-sm user-select-none">
+      <div class="card-body text-warning">
+        <h3 class="card-title">Part-time jobs</h3>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div (click)="onFilterJobs(3, 0)" class="card border-primary mb-3 col-12 shadow-sm  user-select-none">
+      <div class="card-body text-primary">
+        <h3 class="card-title">Remote jobs</h3>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="d-flex flex-row justify-content-center mt-5">
+  <h2>Explore by category</h2>
+</div>
+<div class="d-flex flex-wrap justify-content-center mt-4">
+  <div (click)="onFilterJobs(0, 1)"
+       class="small-card bg-light shadow-sm p-4 m-2 border border-secondary rounded user-select-none">Design &
+    development
+  </div>
+  <div (click)="onFilterJobs(0, 2)"
+       class="small-card bg-light shadow-sm p-4 m-2 border border-secondary rounded user-select-none">Office
+    administrative
+  </div>
+  <div (click)="onFilterJobs(0, 3)"
+       class="small-card bg-light shadow-sm p-4 m-2 border border-secondary rounded user-select-none">Science &
+    technology
+  </div>
+  <div (click)="onFilterJobs(0, 4)"
+       class="small-card bg-light shadow-sm p-4 m-2 border border-secondary rounded user-select-none">Property
+    development
+  </div>
+  <div (click)="onFilterJobs(0, 5)"
+       class="small-card bg-light shadow-sm p-4 m-2 border border-secondary rounded user-select-none">Business
+    development
+  </div>
+  <div (click)="onFilterJobs(0, 6)"
+       class="small-card bg-light shadow-sm p-4 m-2 border border-secondary rounded user-select-none">Admin & accountant
+  </div>
+  <div (click)="onFilterJobs(0, 7)"
+       class="small-card bg-light shadow-sm p-4 m-2 border border-secondary rounded user-select-none">Industry
+    manufacturing
+  </div>
+
+</div>

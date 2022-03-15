@@ -18,9 +18,13 @@ import {User} from "../../../auth/models/user.model";
   styleUrls: ['./jobs.component.scss']
 })
 export class JobsComponent implements OnInit {
+  state = {
+    typeId: 1,
+    categoryId: 1,
+  };
 
-  currentUser: User
-  jobs: Job[]
+  currentUser: User;
+  jobs: Job[];
 
   formGroup: FormGroup = this.fb.group({
     typeId: 0,
@@ -36,11 +40,37 @@ export class JobsComponent implements OnInit {
     private authService: AuthService,
     private likesService: LikesService,
     private router: Router) {
+
+    this.state = this.router.getCurrentNavigation()?.extras?.state as {
+      typeId: number,
+      categoryId: number,
+    };
   }
 
   ngOnInit(): void {
-    this.currentUser = this.authService.currentUserValue
-    this.getJobs()
+    this.currentUser = this.authService.currentUserValue;
+
+    if (this.state?.typeId) {
+      if (this.state?.categoryId) {
+        this.formGroup.patchValue({
+          categoryId: this.state.categoryId,
+          typeId: this.state.typeId
+        });
+      } else
+        this.formGroup.patchValue({
+          typeId: this.state.typeId
+        });
+
+      this.onChangeFilter()
+    } else if (this.state?.categoryId) {
+      this.formGroup.patchValue({
+        categoryId: this.state.categoryId
+      });
+      
+      this.onChangeFilter()
+    } else
+      this.getJobs();
+
   }
 
   ngOnDestroy(): void {
