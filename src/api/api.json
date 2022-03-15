@@ -9,55 +9,46 @@
       "id": 1
     },
     {
-      "firstName": "adasd",
-      "lastName": "asasdsad",
-      "email": "asasdasd@asd",
-      "password": "asdsad",
-      "role": "user",
-      "id": 3
-    },
-    {
-      "organizationName": "orgz",
+      "id": 2,
+      "organizationName": "orgzasdasd",
       "email": "orgz@abv.bg",
       "password": "orgz",
-      "role": "organization",
-      "id": 4
+      "role": "organization"
     },
     {
-      "firstName": "",
-      "lastName": "",
-      "email": "",
-      "password": "",
-      "role": "user",
-      "id": 5
+      "organizationName": "orgz2",
+      "email": "orgz2@abv.bg",
+      "password": "orgz",
+      "role": "organization",
+      "id": 3
     }
   ],
   "jobs": [
     {
-      "id": 2,
-      "userId": 1,
-      "title": "asdsadsa",
-      "description": "dasdasdasdasd",
-      "jobTypeId": 3,
-      "jobCategoryId": 7,
-      "isActive": true
-    },
-    {
-      "id": 4,
-      "userId": 4,
-      "title": "tejob",
-      "description": "asdsad",
-      "jobTypeId": 3,
-      "jobCategoryId": 5,
-      "isActive": true
-    },
-    {
-      "id": 5,
-      "userId": 4,
-      "title": "asdasdsadasdsa",
-      "description": "asdasdasdasddasdasda",
+      "id": 1,
+      "userId": 2,
+      "title": "What is Lorem Ipsum?",
+      "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
       "jobTypeId": 1,
       "jobCategoryId": 1,
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "title": "Why do we use it?",
+      "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+      "jobTypeId": 2,
+      "jobCategoryId": 4,
+      "isActive": true
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "title": "Where does it come from?",
+      "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+      "jobTypeId": 3,
+      "jobCategoryId": 6,
       "isActive": true
     }
   ],
@@ -105,6 +96,30 @@
       "name": "Industry manufacturing"
     }
   ],
-  "applications": [],
-  "likes": []
+  "applications": [
+    {
+      "id": 1,
+      "jobId": 1,
+      "userId": 1,
+      "accepted": null
+    },
+    {
+      "id": 2,
+      "jobId": 3,
+      "userId": 1,
+      "accepted": null
+    }
+  ],
+  "likes": [
+    {
+      "id": 1,
+      "jobId": 2,
+      "userId": 1
+    },
+    {
+      "id": 3,
+      "jobId": 1,
+      "userId": 1
+    }
+  ]
 }

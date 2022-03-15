@@ -27,7 +27,7 @@ export class JobsService {
   }
 
   getJob$(id: number): Observable<Job> {
-    const url = `${this.url}/${id}?_expand=user&_embed=likes&_embed=applications`;
+    const url = `${this.url}/${id}?_expand=user&_expand=jobCategory&_expand=jobType&_embed=likes&_embed=applications`;
 
     return this.http.get<Job>(url);
   }

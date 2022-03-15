@@ -118,7 +118,7 @@
                         class="btn btn-warning col-auto me-2 shadow-none">
                   Edit
                 </button>
-                <button (click)="$event.stopPropagation(); onJobDelete(job.id)"
+                <button (click)="$event.stopPropagation(); openDeleteModal(deleteModal, job.id)"
                         *ngIf="currentUser.id === job.userId"
                         class="btn btn-danger col-auto me-2 shadow-none">
                   Delete
@@ -135,3 +135,17 @@
     </div>
   </div>
 </div>
+
+<ng-template #deleteModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+    <button (click)="d('Cross click')" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this job?</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="c('no')" class="btn btn-secondary" type="button">Cancel</button>
+    <button (click)="c('yes')" class="btn btn-danger" type="button">Delete</button>
+  </div>
+</ng-template>

@@ -110,10 +110,13 @@
             <p class="card-text ">{{ job.description }}</p>
 
             <div class="d-flex flex-row justify-content-end">
-              <div *ngIf="currentUser.id !== job.userId && job.applied === true"
+              <div *ngIf="currentUser?.id !== job?.userId && job?.applied === true"
                    [ngClass]="{'text-success': job?.accepted == true,'text-danger': job?.accepted == false, 'text-muted': job?.accepted == null}"
-                   class="me-auto my-auto text-center">
-                {{job?.accepted === true ? 'Accepted' : job?.accepted === false ? 'Rejected' : "Awaiting response"}}
+                   [ngSwitch]="job?.accepted"
+                   class="me-auto my-auto">
+                <p *ngSwitchCase="true" class="my-auto">Accepted</p>
+                <p *ngSwitchCase="false" class="my-auto">Rejected</p>
+                <p *ngSwitchDefault class="my-auto">Awaiting response</p>
               </div>
               <div class="btn-group" style="flex-wrap: wrap;">
                 <button (click)="$event.stopPropagation(); onJobGiveUp(job.id)"

@@ -15,12 +15,6 @@ export class LikesService {
   constructor(private http: HttpClient) {
   }
 
-  getLikesByJob$(jobId: number): Observable<Like[]> {
-    let finalUrl = `${this.url}?jobId=${jobId}`;
-
-    return this.http.get<Like[]>(finalUrl);
-  }
-
   getLike$(userId: number, jobId: number): Observable<Like | null> {
     const url = `${this.url}?userId=${userId}&jobId=${jobId}`
 
@@ -40,12 +34,6 @@ export class LikesService {
 
   postLike$(like: Like): Observable<Like> {
     return this.http.post<Like>(this.url, like);
-  }
-
-  putLike$(like: Like): Observable<Like> {
-    const url = `${this.url}/${like.id}`;
-
-    return this.http.put<Like>(url, like);
   }
 
   deleteLike$(id: number): Observable<void> {

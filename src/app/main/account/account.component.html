@@ -1,6 +1,6 @@
-<div class="row justify-content-center align-content-center h-100">
+<div *ngIf="formGroup" class="row justify-content-center align-content-center h-100">
   <div class="col-xl-4 col-lg-5 col-md-6 col-10 bg-light p-4 shadow-sm">
-    <h3>{{ formGroup.enabled ? 'Account Edit' : 'Account info' }}</h3>
+    <h3>{{ formGroup?.enabled ? 'Account Edit' : 'Account info' }}</h3>
 
     <form (ngSubmit)="onSubmit()" [formGroup]="formGroup"
           class="mt-4" disabled>
@@ -76,7 +76,7 @@
                   class="btn btn-warning shadow-none ms-2" type="button">
             Edit
           </button>
-          <button (click)="onDelete()"
+          <button (click)="openDeleteModal(deleteModal)"
                   *ngIf="formGroup.disabled"
                   class="btn btn-danger shadow-none ms-2" type="button">
             Delete
@@ -96,3 +96,18 @@
     </form>
   </div>
 </div>
+
+<ng-template #deleteModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+    <button (click)="d('Cross click')" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete your account?</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="c('no')" class="btn btn-secondary" type="button">Cancel</button>
+    <button (click)="c('yes')" class="btn btn-danger" type="button">Delete</button>
+  </div>
+</ng-template>
+

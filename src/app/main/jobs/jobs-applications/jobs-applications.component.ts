@@ -64,7 +64,8 @@ export class JobsApplicationsComponent implements OnInit {
 
         response.forEach(job => {
             job.likedByMe = job.likes.find(l => l.userId === this.currentUser.id) != null;
-            job.applied = job.applications.find(c => c.userId === this.currentUser.id) != null;
+            job.applied = job.applications.find(a => a.userId === this.currentUser.id) != null;
+            job.accepted = job.applications.find(a => a.userId === this.currentUser.id)?.accepted;
           }
         )
 

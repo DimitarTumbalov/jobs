@@ -1,6 +1,6 @@
-<div class="d-flex flex-row justify-content-center" style="">
+<div *ngIf="formGroup" class="d-flex flex-row justify-content-center">
   <div class="col-12 bg-light p-4 shadow-sm" style="max-width: 800px;">
-    <h3 *ngIf="formGroup">{{ job?.id ? 'Edit job' : 'Post Job'}}</h3>
+    <h3>{{ job?.id ? 'Edit job' : 'Post Job'}}</h3>
     <form (ngSubmit)="onSubmit()"
           *ngIf="formGroup"
           [formGroup]="formGroup"

@@ -9,6 +9,8 @@ import {Application} from "../../models/application.model";
 import {Like} from "../../models/like.model";
 import {LikesService} from "../../services/likesService";
 import {ApplicationsService} from "../../services/applications.service";
+import {NgbModal, NgbModalConfig} from "@ng-bootstrap/ng-bootstrap";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-job',
@@ -28,8 +30,11 @@ export class JobComponent implements OnInit {
     private jobsService: JobsService,
     public authService: AuthService,
     private likesService: LikesService,
-    private applicationsService: ApplicationsService
-  ) {
+    private applicationsService: ApplicationsService,
+    config: NgbModalConfig,
+    private modalService: NgbModal) {
+    config.backdrop = 'static';
+    config.keyboard = false;
   }
 
   ngOnInit(): void {
@@ -50,8 +55,19 @@ export class JobComponent implements OnInit {
         if (response) {
           response.likedByMe = response.likes?.find(l => l.userId === this.currentUser.id) != null;
           response.applied = response.applications?.find(c => c.userId === this.currentUser.id) != null;
+          response.accepted = response.applications.find(a => a.userId === this.currentUser.id)?.accepted;
 
-          this.job = response;
+          this.applicationsService.getApplications$().pipe(
+            map((applications: Application[]) => {
+              return applications.filter(a => a.jobId === response.id)
+            })
+          ).pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (applications: Application[]) => {
+                response.applications = applications.filter(a => response.applications.find(oa => oa.id === a.id) !== null);
+                this.job = response;
+              }
+            });
         }
       }
     });
@@ -163,5 +179,13 @@ export class JobComponent implements OnInit {
 
   onJobEdit(id: number) {
     this.router.navigate(['/jobs', 'edit', id]);
+  }
+
+  openDeleteModal(deleteModal) {
+    this.modalService.open(deleteModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      if (result === 'yes')
+        this.onJobDelete();
+    }, () => {
+    });
   }
 }

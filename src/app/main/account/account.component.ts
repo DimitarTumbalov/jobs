@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../auth/services/auth.service";
 import {User} from "../../auth/models/user.model";
 import {HttpErrorResponse} from "@angular/common/http";
+import {NgbModal, NgbModalConfig} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-account',
@@ -12,14 +13,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
-  formGroup: FormGroup = this.fb.group({
-    role: [1],
-    firstName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(25)]],
-    lastName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(25)]],
-    organizationName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
-  })
+  formGroup: FormGroup
 
   currentUser: User
 
@@ -32,19 +26,29 @@ export class AccountComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
-  ) {
+    private authService: AuthService,
+    config: NgbModalConfig,
+    private modalService: NgbModal) {
+
+    config.backdrop = 'static';
+    config.keyboard = false;
+
     this.currentUser = this.authService.currentUserValue;
 
     this.authService.getUser$(this.currentUser.id).pipe(takeUntil(this.destroy$))
       .subscribe(
         response => {
-          this.user = response
-          this.firstNameControl.setValue(response.firstName)
-          this.lastNameFormControl.setValue(response.lastName)
-          this.organizationNameFormControl.setValue(response.organizationName)
-          this.emailFormControl.setValue(response.email)
-          this.passwordFormControl.setValue(response.password)
+          this.user = response;
+
+          this.formGroup = this.fb.group({
+            firstName: [response.firstName, [Validators.required, Validators.minLength(1), Validators.maxLength(25)]],
+            lastName: [response.lastName, [Validators.required, Validators.minLength(1), Validators.maxLength(25)]],
+            organizationName: [response.organizationName, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+            email: [response.email, [Validators.required, Validators.email]],
+            password: [response.password, [Validators.required, Validators.minLength(4), Validators.maxLength(20)]]
+          });
+
+          this.formGroup.disable();
         }
       )
   }
@@ -70,7 +74,6 @@ export class AccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formGroup.disable()
   }
 
   ngOnDestroy(): void {
@@ -79,11 +82,11 @@ export class AccountComponent implements OnInit {
   }
 
   onEdit() {
-    this.formGroup.enable()
+    this.formGroup?.enable()
   }
 
   onCancel() {
-    this.formGroup.disable()
+    this.formGroup?.disable()
     this.firstNameControl.setValue(this.user.firstName)
     this.lastNameFormControl.setValue(this.user.lastName)
     this.organizationNameFormControl.setValue(this.user.organizationName)
@@ -140,6 +143,7 @@ export class AccountComponent implements OnInit {
         if (response == null || response.id === this.user.id) {
           this.authService.updateUser$(user).pipe(takeUntil(this.destroy$)).subscribe({
             next: (response) => {
+              this.user = user
               this.authService.storeUserData(response);
             },
             error: (response: HttpErrorResponse) => {
@@ -154,11 +158,20 @@ export class AccountComponent implements OnInit {
   }
 
   onDelete() {
+    // Delete account
     this.authService.deleteUser$(this.user.id).pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.authService.logout()
         this.router.navigate(['/auth', 'login']);
       });
+  }
+
+  openDeleteModal(deleteModal) {
+    this.modalService.open(deleteModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      if (result === 'yes')
+        this.onDelete();
+    }, () => {
+    });
   }
 
 }

@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   getUser$(id: number): Observable<User> {
-    return this.client.get<User>(`${this.url}/${id}`).pipe(
+    return this.client.get<User>(`${this.url}/${id}?_embed=jobs&_embed=likes&_embed=applications`).pipe(
       map((response: User) => {
 
         if (response)

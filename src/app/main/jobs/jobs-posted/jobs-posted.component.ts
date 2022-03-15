@@ -10,6 +10,7 @@ import {AuthService} from "../../../auth/services/auth.service";
 import {LikesService} from "../../services/likesService";
 import {Like} from "../../models/like.model";
 import {User} from "../../../auth/models/user.model";
+import {NgbModal, NgbModalConfig} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-jobs-applications',
@@ -33,7 +34,11 @@ export class JobsPostedComponent implements OnInit {
     private applicationsService: ApplicationsService,
     private authService: AuthService,
     private likesService: LikesService,
-    private router: Router) {
+    private router: Router,
+    config: NgbModalConfig,
+    private modalService: NgbModal) {
+    config.backdrop = 'static';
+    config.keyboard = false;
   }
 
   ngOnInit(): void {
@@ -138,5 +143,13 @@ export class JobsPostedComponent implements OnInit {
 
   onJobEdit(id: number) {
     this.router.navigate(['/jobs', 'edit', id]);
+  }
+
+  openDeleteModal(deleteModal, jobId) {
+    this.modalService.open(deleteModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      if (result === 'yes')
+        this.onJobDelete(jobId);
+    }, () => {
+    });
   }
 }

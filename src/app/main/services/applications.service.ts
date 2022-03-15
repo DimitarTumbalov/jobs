@@ -19,14 +19,6 @@ export class ApplicationsService {
     return this.http.get<Application[]>(`${this.url}?_expand=user`);
   }
 
-  // getApplicationsByUserId$(userId: number = null): Observable<Application[]> {
-  //   return this.http.get<Application[]>(`${this.url}?userId=${userId}`);
-  // }
-  //
-  // getApplicationsByJobId$(jobId: number = null): Observable<Application[]> {
-  //   return this.http.get<Application[]>(`${this.url}?jobId=${jobId}`);
-  // }
-
   getApplication$(jobId: number, userId: number): Observable<Application | null> {
     const url = `${this.url}?jobId=${jobId}&userId=${userId}&_expand=user`
 

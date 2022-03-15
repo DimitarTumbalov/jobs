@@ -1,3 +1,7 @@
+import {Job} from "../../main/models/job.model";
+import {Like} from "../../main/models/like.model";
+import {Application} from "../../main/models/application.model";
+
 export interface User {
   id?: number;
   firstName?: string;
@@ -6,4 +10,7 @@ export interface User {
   email: string;
   password?: string;
   role: string;
+  jobs?: Job[];
+  likes?: Like[];
+  applications?: Application[];
 }

@@ -11,6 +11,7 @@ import {AuthService} from "../../../auth/services/auth.service";
 import {LikesService} from "../../services/likesService";
 import {Like} from "../../models/like.model";
 import {User} from "../../../auth/models/user.model";
+import {NgbModal, NgbModalConfig} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-jobs',
@@ -39,7 +40,12 @@ export class JobsComponent implements OnInit {
     private applicationsService: ApplicationsService,
     private authService: AuthService,
     private likesService: LikesService,
-    private router: Router) {
+    private router: Router,
+    config: NgbModalConfig,
+    private modalService: NgbModal) {
+
+    config.backdrop = 'static';
+    config.keyboard = false;
 
     this.state = this.router.getCurrentNavigation()?.extras?.state as {
       typeId: number,
@@ -66,7 +72,7 @@ export class JobsComponent implements OnInit {
       this.formGroup.patchValue({
         categoryId: this.state.categoryId
       });
-      
+
       this.onChangeFilter()
     } else
       this.getJobs();
@@ -94,8 +100,9 @@ export class JobsComponent implements OnInit {
         });
 
         response.forEach(job => {
-            job.likedByMe = job.likes.find(l => l.userId === this.currentUser?.id) != null;
-            job.applied = job.applications.find(c => c.userId === this.currentUser?.id) != null;
+            job.likedByMe = job.likes.find(l => l.userId === this.currentUser.id) != null;
+            job.applied = job.applications.find(a => a.userId === this.currentUser.id) != null;
+            job.accepted = job.applications.find(a => a.userId === this.currentUser.id)?.accepted;
           }
         )
 
@@ -211,5 +218,13 @@ export class JobsComponent implements OnInit {
 
   onJobEdit(id: number) {
     this.router.navigate(['/jobs', 'edit', id]);
+  }
+
+  openDeleteModal(deleteModal, jobId) {
+    this.modalService.open(deleteModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      if (result === 'yes')
+        this.onJobDelete(jobId)
+    }, () => {
+    });
   }
 }

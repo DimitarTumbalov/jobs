@@ -112,8 +112,11 @@
             <div class="d-flex flex-row justify-content-end">
               <div *ngIf="currentUser?.id !== job?.userId && job?.applied === true"
                    [ngClass]="{'text-success': job?.accepted == true,'text-danger': job?.accepted == false, 'text-muted': job?.accepted == null}"
+                   [ngSwitch]="job?.accepted"
                    class="me-auto my-auto">
-                {{job?.accepted === true ? 'Accepted' : job?.accepted === false ? 'Rejected' : "Awaiting response"}}
+                <p *ngSwitchCase="true" class="my-auto">Accepted</p>
+                <p *ngSwitchCase="false" class="my-auto">Rejected</p>
+                <p *ngSwitchDefault class="my-auto">Awaiting response</p>
               </div>
               <div *ngIf="currentUser?.id === job.userId"
                    class="me-auto my-auto text-center text-muted">
@@ -125,19 +128,19 @@
                         class="btn btn-warning col-auto me-2 shadow-none">
                   Edit
                 </button>
-                <button (click)="$event.stopPropagation(); onJobDelete(job.id)"
+                <button (click)="$event.stopPropagation(); openDeleteModal(deleteModal, job.id)"
                         *ngIf="currentUser?.id === job.userId"
                         class="btn btn-danger col-auto me-2 shadow-none">
                   Delete
                 </button>
                 <button (click)="$event.stopPropagation(); onJobApply(job.id)"
-                        *ngIf="currentUser?.id !== job.userId"
+                        *ngIf="currentUser?.id !== job.userId && currentUser?.role === 'user'"
                         [ngClass]="(job?.applied === true) ? 'btn-success' : 'btn-outline-success'"
                         class="btn col-auto me-2 shadow-none">
                   {{(job?.applied === true) ? 'Applied' : 'Apply'}}
                 </button>
                 <button (click)="$event.stopPropagation(); onJobLike(job.id)"
-                        [ngClass]="[currentUser?.id === job.userId ? 'disabled' : '', (job?.likedByMe === true) ? 'btn-primary': 'btn-outline-primary']"
+                        [ngClass]="[(currentUser?.role === 'user') ? '' : 'disabled', (job.likedByMe === true) ? 'btn-primary': 'btn-outline-primary']"
                         class="btn col-auto shadow-none">
                   Likes {{job?.likes !== null ? job.likes.length : 0}}
                 </button>
@@ -149,3 +152,17 @@
     </div>
   </div>
 </div>
+
+<ng-template #deleteModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+    <button (click)="d('Cross click')" aria-label="Close" class="btn-close" type="button"></button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this job?</p>
+  </div>
+  <div class="modal-footer">
+    <button (click)="c('no')" class="btn btn-secondary" type="button">Cancel</button>
+    <button (click)="c('yes')" class="btn btn-danger" type="button">Delete</button>
+  </div>
+</ng-template>
